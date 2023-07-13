@@ -1,11 +1,17 @@
 import './App.css';
+import Filter from './components/filter';
 import Header from './components/header';
+import SalesSummaryByGender from './components/sales-summary-by-gender';
 
 function App() {
   return (
-    <div className="App">
+    <>
       <Header />
-    </div>
+      <div className="app-container">
+        <Filter />
+        <SalesSummaryByGender />
+      </div>
+    </>
   );
 }
 
