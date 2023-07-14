@@ -1,41 +1,31 @@
 import Select from 'react-select';
 import { useState, useEffect } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
-import { StoreSelectOptions } from '../../types';
+import { FilterData, Store, StoreSelectOptions } from '../../types';
 import { Controller, useForm } from 'react-hook-form';
-import { BASE_URL, makeRequest } from '../../utils/resquests';
-
+import { BASE_URL } from '../../utils/resquests';
 import './styles.css';
 
-function Filter() {
-  const [StoreSelectOptions, setStoreSelectOptions] = useState<StoreSelectOptions[]>([]);
-  const [salesByGender, setSalesByGender] = useState();
+type Props = {
+  onFilterChange: (filter: FilterData) => void;
+};
+
+function Filter({ onFilterChange }: Props) {
+  const { getValues, setValue } = useForm();
+
   const { control } = useForm();
+  const [StoreSelectOptions, setStoreSelectOptions] = useState<StoreSelectOptions[]>([]);
+  const [store, setStore] = useState<Store>();
 
-  // const handleChange = (data: { value: number; label: string }) => {
-  //   const params: AxiosRequestConfig = {
-  //     url:
-  //       data == null || undefined
-  //         ? `${BASE_URL}/stores`
-  //         : `${BASE_URL}/sales/summary?storeId=${data.value}`
-  //   };
-  //   axios(params)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
+  const onChangeStore = (selectedOption: Store) => {
+    setValue('store', selectedOption);
+    const selectedStore = getValues('store');
+    setStore(selectedStore);
+    onFilterChange({ store });
+    console.log('PEGOU OS DADOS', selectedStore);
+  };
 
-  // creating options for the select
-
-  useEffect(() => {
-    makeRequest.get('/sales/by-gender?storeId=0').then((response) => {
-      console.log(response.data);
-    });
-  }, []);
-
+  // Request for possible select options
   useEffect(() => {
     const params: AxiosRequestConfig = {
       url: `${BASE_URL}/stores`
@@ -74,7 +64,7 @@ function Filter() {
                 placeholder="Selecione..."
                 onChange={(selectedOption) => {
                   field.onChange(selectedOption);
-                  //handleChange(selectedOption);
+                  onChangeStore(selectedOption);
                 }}
                 value={field.value}
               />

@@ -1,4 +1,5 @@
 import { ApexOptions } from 'apexcharts';
+import { SalesByGender } from '../../types';
 
 export const buildPieChartConfig = (labels: string[] = [], name: string) => {
   return {
@@ -12,10 +13,9 @@ export const buildPieChartConfig = (labels: string[] = [], name: string) => {
       style: {
         color: '#FFF',
         fontSize: '18px',
-        fontFamily: 'Roboto, sans-serif'
+        fontFamily: 'Ubuntu, sans-serif'
       }
     },
-    colors: ['#3e82f7', '#04d182', '#ffc107', '#ff6b72'],
     legend: {
       show: true,
       floating: false,
@@ -24,17 +24,26 @@ export const buildPieChartConfig = (labels: string[] = [], name: string) => {
       labels: {
         colors: ['#b4bed2']
       },
-      fontFamily: 'Roboto, sans-serif',
-      fontSize: '18px'
+      fontFamily: 'Ubuntu, sans-serif',
+      fontSize: '18px',
+      itemMargin: {
+        vertical: 7
+      }
     },
     dataLabels: {
-      enabled: false
+      enabled: true,
+      style: {
+        fontSize: '10px',
+        fontFamily: 'Ubuntu, sans-serif',
+        fontWeight: 'regular',
+        colors: ['#ffffff']
+      }
     },
     plotOptions: {
       pie: {
         size: 400,
         donut: {
-          size: '85%',
+          size: '63%',
           labels: {
             show: true,
             name: {
@@ -49,7 +58,7 @@ export const buildPieChartConfig = (labels: string[] = [], name: string) => {
               showAlways: true,
               fontSize: '24px',
               color: '#ABB1C0',
-              fontFamily: 'Roboto, sans-serif',
+              fontFamily: 'Ubuntu, sans-serif',
               formatter: function () {
                 return '';
               }
@@ -62,4 +71,10 @@ export const buildPieChartConfig = (labels: string[] = [], name: string) => {
       height: '400px'
     }
   } as ApexOptions;
+};
+
+export const sumSalesByGender = (salesByGender: SalesByGender[] = []) => {
+  return salesByGender.reduce((previousValue, currentValue) => {
+    return previousValue + currentValue.sum;
+  }, 0);
 };

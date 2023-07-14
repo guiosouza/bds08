@@ -1,5 +1,10 @@
 import ReactApexChart from 'react-apexcharts';
-import { buildPieChartConfig } from './helpers';
+import { buildPieChartConfig, sumSalesByGender } from './helpers';
+import { useEffect, useState } from 'react';
+import { makeRequest } from '../../utils/resquests';
+import { SalesByGender } from '../../types';
+import { formatPrice } from '../../utils/formatters';
+
 import './styles.css';
 
 type Props = {
@@ -9,17 +14,26 @@ type Props = {
 };
 
 function SalesSummaryByGender({ labels, name, series }: Props) {
+  const [totalSum, setTotalSum] = useState(0);
+  useEffect(() => {
+    makeRequest.get<SalesByGender[]>('/sales/by-gender?storeId=0').then((response) => {
+      const newTotalSum = sumSalesByGender(response.data);
+      setTotalSum(newTotalSum);
+    });
+  }, []);
+
   return (
     <div className="sales-summary-container">
       <div className="sales-total-sum">
-        <h2>{'R$ 746.484,00'}</h2>
+        <h2>{formatPrice(totalSum)}</h2>
         <p>{'Total de vendas'}</p>
       </div>
       <div className="pie-chart">
         <ReactApexChart
           options={buildPieChartConfig(labels, name)}
           type="donut"
-          width="300"
+          height="320"
+          width="320"
           series={series}
         />
       </div>
