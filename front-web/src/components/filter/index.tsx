@@ -1,31 +1,40 @@
 import Select from 'react-select';
 import { useState, useEffect } from 'react';
 import axios, { AxiosRequestConfig } from 'axios';
-import { Store } from '../../types';
+import { StoreSelectOptions } from '../../types';
 import { Controller, useForm } from 'react-hook-form';
-import { BASE_URL } from '../../utils/resquests';
+import { BASE_URL, makeRequest } from '../../utils/resquests';
 
 import './styles.css';
 
 function Filter() {
-  const [selectStore, setSelectStore] = useState<Store[]>([]);
+  const [StoreSelectOptions, setStoreSelectOptions] = useState<StoreSelectOptions[]>([]);
+  const [salesByGender, setSalesByGender] = useState();
   const { control } = useForm();
 
-  const handleChange = (data: { value: number; label: string }) => {
-    const params: AxiosRequestConfig = {
-      url:
-        data == null || undefined
-          ? `${BASE_URL}/stores`
-          : `${BASE_URL}/sales/summary?storeId=${data.value}`
-    };
-    axios(params)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const handleChange = (data: { value: number; label: string }) => {
+  //   const params: AxiosRequestConfig = {
+  //     url:
+  //       data == null || undefined
+  //         ? `${BASE_URL}/stores`
+  //         : `${BASE_URL}/sales/summary?storeId=${data.value}`
+  //   };
+  //   axios(params)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+  // creating options for the select
+
+  useEffect(() => {
+    makeRequest.get('/sales/by-gender?storeId=0').then((response) => {
+      console.log(response.data);
+    });
+  }, []);
 
   useEffect(() => {
     const params: AxiosRequestConfig = {
@@ -46,7 +55,7 @@ function Filter() {
           };
         }
       );
-      setSelectStore(transformedData);
+      setStoreSelectOptions(transformedData);
     });
   }, []);
 
@@ -60,12 +69,12 @@ function Filter() {
             render={({ field }) => (
               <Select
                 classNamePrefix="filter-search-select"
-                options={selectStore}
+                options={StoreSelectOptions}
                 isClearable={true}
                 placeholder="Selecione..."
                 onChange={(selectedOption) => {
                   field.onChange(selectedOption);
-                  handleChange(selectedOption);
+                  //handleChange(selectedOption);
                 }}
                 value={field.value}
               />
