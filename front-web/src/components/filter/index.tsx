@@ -9,13 +9,7 @@ import './styles.css';
 
 function Filter() {
   const [selectStore, setSelectStore] = useState<Store[]>([]);
-  const {
-    register,
-    handleSubmit,
-    control,
-    watch,
-    formState: { errors }
-  } = useForm();
+  const { control } = useForm();
 
   const handleChange = (data: { value: number; label: string }) => {
     const params: AxiosRequestConfig = {
@@ -24,6 +18,13 @@ function Filter() {
           ? `${BASE_URL}/stores`
           : `${BASE_URL}/sales/summary?storeId=${data.value}`
     };
+    axios(params)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {

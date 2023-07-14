@@ -1,11 +1,37 @@
 .sales-summary-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 15px;
   background-color: var(--primary-color);
   height: 517px;
   margin-top: 10px;
   margin-bottom: 40px;
   border-radius: 5px;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.sales-total-sum {
+  margin-top: 25px;
+}
+
+.sales-total-sum h2 {
+  line-height: normal;
+  font-size: 36px;
+  color: var(--tertiary-color);
+}
+
+.sales-total-sum p {
+  line-height: normal;
+  font-size: 18px;
+  color: #8D8D8D;
+  margin: 0px
+}
+
+.pie-chart {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.apexcharts-legend.apexcharts-align-center {
+  flex-direction: column;
+  align-items: center;
 }

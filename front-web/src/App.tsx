@@ -9,7 +9,11 @@ function App() {
       <Header />
       <div className="app-container">
         <Filter />
-        <SalesSummaryByGender />
+        <SalesSummaryByGender
+          name=""
+          labels={['Feminino', 'Masculino', 'Outro']}
+          series={[40, 30, 30]}
+        />
       </div>
     </>
   );
