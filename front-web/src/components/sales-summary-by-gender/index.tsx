@@ -35,8 +35,8 @@ function SalesSummaryByGender({ labels = [], name, series = [], filterData }: Pr
         <ReactApexChart
           options={buildPieChartConfig(labels, name)}
           type="donut"
-          height="324"
-          width="324"
+          height="330"
+          width="330"
           series={series}
         />
       </div>
