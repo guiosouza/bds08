@@ -2,25 +2,28 @@ import ReactApexChart from 'react-apexcharts';
 import { buildPieChartConfig, sumSalesByGender } from './helpers';
 import { useEffect, useState } from 'react';
 import { makeRequest } from '../../utils/resquests';
-import { SalesByGender } from '../../types';
+import { FilterData, SalesByGender } from '../../types';
 import { formatPrice } from '../../utils/formatters';
 
 import './styles.css';
 
 type Props = {
-  labels: string[];
+  labels?: string[];
   name: string;
-  series: number[];
+  series?: number[];
+  filterData?: FilterData;
 };
 
-function SalesSummaryByGender({ labels, name, series }: Props) {
+function SalesSummaryByGender({ labels = [], name, series = [], filterData }: Props) {
   const [totalSum, setTotalSum] = useState(0);
+
   useEffect(() => {
-    makeRequest.get<SalesByGender[]>('/sales/by-gender?storeId=0').then((response) => {
+    const id: number = filterData?.store?.id != undefined ? filterData?.store?.id : 0;
+    makeRequest.get<SalesByGender[]>(`/sales/by-gender?storeId=${id}`).then((response) => {
       const newTotalSum = sumSalesByGender(response.data);
       setTotalSum(newTotalSum);
     });
-  }, []);
+  }, [filterData]);
 
   return (
     <div className="sales-summary-container">
@@ -32,8 +35,8 @@ function SalesSummaryByGender({ labels, name, series }: Props) {
         <ReactApexChart
           options={buildPieChartConfig(labels, name)}
           type="donut"
-          height="320"
-          width="320"
+          height="324"
+          width="324"
           series={series}
         />
       </div>

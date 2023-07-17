@@ -20,7 +20,7 @@ export const buildPieChartConfig = (labels: string[] = [], name: string) => {
       show: true,
       floating: false,
       position: 'bottom',
-      offsetY: 10,
+      offsetY: 16,
       labels: {
         colors: ['#b4bed2']
       },
@@ -43,7 +43,7 @@ export const buildPieChartConfig = (labels: string[] = [], name: string) => {
       pie: {
         size: 400,
         donut: {
-          size: '63%',
+          size: '67%',
           labels: {
             show: true,
             name: {

@@ -15,14 +15,18 @@ function Filter({ onFilterChange }: Props) {
 
   const { control } = useForm();
   const [StoreSelectOptions, setStoreSelectOptions] = useState<StoreSelectOptions[]>([]);
-  const [store, setStore] = useState<Store>();
+  const [, setStore] = useState<Store>();
 
   const onChangeStore = (selectedOption: Store) => {
     setValue('store', selectedOption);
     const selectedStore = getValues('store');
     setStore(selectedStore);
-    onFilterChange({ store });
-    console.log('PEGOU OS DADOS', selectedStore);
+    onFilterChange({
+      store: {
+        name: selectedStore ? selectedStore.label : '',
+        id: selectedStore ? selectedStore.value : 0
+      }
+    });
   };
 
   // Request for possible select options
